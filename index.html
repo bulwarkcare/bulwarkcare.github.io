@@ -291,7 +291,7 @@
                         <p class="text-sm mt-2 text-gray-400">1回・お申し込みごと</p>
                     </div>
                     <ul class="space-y-3 mb-8 text-gray-600 flex-1">
-                        <li class="flex items-center gap-3"><svg class="h-5 w-5 text-forest-DEFAULT flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> 診断書（A4×3枚）をお返しします</li>
+                        <li class="flex items-center gap-3"><svg class="h-5 w-5 text-forest-DEFAULT flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> 診断書（数枚）をお返しします</li>
                         <li class="flex items-center gap-3"><svg class="h-5 w-5 text-forest-DEFAULT flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> KEEPERの設置は不要です</li>
                     </ul>
                     <a href="#contact-form" class="block w-full bg-sun hover:bg-yellow-400 text-forest-dark font-bold py-4 rounded-full shadow-md transition text-center">まずは無料で診断する</a>
@@ -534,9 +534,9 @@
                     <div class="pt-4 text-center">
                         <button type="submit"
                             class="bg-sun hover:bg-yellow-400 text-forest-dark text-xl font-bold py-5 px-14 rounded-full shadow-xl transition transform hover:-translate-y-1 sans-serif-text">
-                            無料で相談する
+                            メールで相談する
                         </button>
-                        <p class="text-xs text-gray-500 mt-4 sans-serif-text">※ 通常1営業日以内にご返信いたします　　<span class="text-red-400">*</span> は必須項目</p>
+                        <p class="text-xs text-gray-500 mt-4 sans-serif-text">※ ボタンを押すと、入力内容の入ったメールの画面が開きます。通常1営業日以内にご返信いたします　　<span class="text-red-400">*</span> は必須項目</p>
                     </div>
                 </form>
 
@@ -544,8 +544,8 @@
                     <div class="w-16 h-16 bg-forest-DEFAULT rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
                     </div>
-                    <h4 class="text-2xl font-bold text-white mb-3">送信が完了しました</h4>
-                    <p class="text-gray-300 sans-serif-text leading-relaxed">1営業日以内にご連絡いたします。<br>しばらくお待ちください。</p>
+                    <h4 class="text-2xl font-bold text-white mb-3">メールの画面が開きます</h4>
+                    <p class="text-gray-300 sans-serif-text leading-relaxed">入力いただいた内容が入っています。そのまま送信してください。<br>開かない場合は、<a href="mailto:keeper.support.jp@gmail.com" class="underline text-sun">keeper.support.jp@gmail.com</a> へ直接お送りください。</p>
                 </div>
             </div>
         </div>
@@ -563,6 +563,18 @@
                     else { input.style.borderColor = ''; }
                 });
                 if (!valid) return;
+                // 2026-09-25：このフォームには送り先が無く、書いた内容が届いていなかった。
+                // 受け取りの仕組みができるまで、書いた内容を入れたメールを開いて送っていただく形にする。
+                var f = function (n) { var el = form.elements[n]; return el ? el.value.trim() : ''; };
+                var body = '施設名：' + f('facility') + '\n'
+                         + 'お名前：' + f('name') + '\n'
+                         + '都道府県：' + f('prefecture') + '\n'
+                         + 'メールアドレス：' + f('email') + '\n'
+                         + '電話番号：' + f('tel') + '\n' + '\n'
+                         + 'ご相談内容：' + '\n' + f('message') + '\n';
+                window.location.href = 'mailto:keeper.support.jp@gmail.com'
+                    + '?subject=' + encodeURIComponent('無料診断のご相談（' + f('facility') + '）')
+                    + '&body=' + encodeURIComponent(body);
                 document.getElementById('contact-form-el').style.display = 'none';
                 document.getElementById('form-success').classList.remove('hidden');
             }
@@ -572,10 +584,10 @@
     <!-- Footer -->
     <footer class="bg-black text-gray-500 py-12 text-center sans-serif-text">
         <div class="max-w-6xl mx-auto px-6">
-            <h3 class="text-xl font-bold mb-3 tracking-wider" style="color: #16324a;">合同会社Bulwark Care</h3>
+            <h3 class="text-xl font-bold mb-3 tracking-wider" style="color: #16324a;">Bulwark Care</h3>
             <p class="mb-8 text-sm">介護現場の「もしも」の手前にあるものを、数字にする。</p>
             <div class="flex flex-wrap justify-center gap-6 text-sm mb-10">
-                <a href="#" class="hover:text-white transition">運営会社</a>
+                <a href="#" class="hover:text-white transition">運営者</a>
                 <a href="#" class="hover:text-white transition">プライバシーポリシー</a>
                 <a href="#" class="hover:text-white transition">特定商取引法に基づく表記</a>
             </div>
